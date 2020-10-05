@@ -65,7 +65,7 @@ public class ArrayDeque<T> {
         }
         size -= 1;
         if(items.length >= 16 && getUsageRatio() < 0.25){
-            resize((int)0.5*items.length);
+            resize((int)（0.5*items.length）);
         }
         return temp;
     }
@@ -83,7 +83,7 @@ public class ArrayDeque<T> {
         }
         size -= 1;
         if(items.length >= 16 && getUsageRatio() < 0.25){
-            resize((int)0.5*items.length);
+            resize((int)（0.5*items.length）);
         }
         return temp;
     }
