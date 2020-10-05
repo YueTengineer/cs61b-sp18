@@ -10,11 +10,10 @@ public class ArrayDeque<T> {
         size = 0;
     }
 
-    public void addFirst(T item){
+       public void addFirst(T item){
         if(size == 0){
             items[0] = item;
             first = 0;
-            last  = 0;
         }else{
             if(size!=items.length){
                 if(first == 0){
@@ -22,11 +21,11 @@ public class ArrayDeque<T> {
                 }else{
                     first -= 1;
                 }
-                items[first] = item;
+
             } else{
                 resize(size*refactor);
-                addFirst(item);
             }
+            items[first] = item;
         }
 
         size += 1;
@@ -36,7 +35,6 @@ public class ArrayDeque<T> {
         if(size == 0){
             items[0] = item;
             last = 0;
-            first = 0;
         }else{
             if(size!=items.length){
                 if(last == items.length-1){
@@ -45,11 +43,10 @@ public class ArrayDeque<T> {
                     last = size+first-items.length;
                     last = convert(last);
                 }
-                items[last] = item;
             } else{
                 resize(size*refactor);
-                addLast(item);
             }
+            items[last] = item;
         }
 
         size += 1;
