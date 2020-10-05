@@ -25,6 +25,7 @@ public class ArrayDeque<T> {
 
             } else{
                 resize(size*refactor);
+                first = items.length - 1;
             }
             items[first] = item;
         }
