@@ -117,7 +117,7 @@ public class ArrayDeque<T> {
 
     private void resize(int cap){
         T[] a = (T []) new Object[cap];
-        if(first<last){
+        if(first>last){
             System.arraycopy(items,first,a,0,items.length-first);
             System.arraycopy(items,0,a,items.length-first,last+1);
         }else{
