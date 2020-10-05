@@ -14,6 +14,7 @@ public class ArrayDeque<T> {
         if(size == 0){
             items[0] = item;
             first = 0;
+            last = 0;
         }else{
             if(size!=items.length){
                 if(first == 0){
@@ -35,6 +36,7 @@ public class ArrayDeque<T> {
         if(size == 0){
             items[0] = item;
             last = 0;
+            first = 0;
         }else{
             if(size!=items.length){
                 if(last == items.length-1){
@@ -97,7 +99,7 @@ public class ArrayDeque<T> {
     }
 
     public void printDeque(){
-        if(first>last){
+        if(first<=last){
             for(int i=first;i<=last;i++){
                 System.out.print(items[i]);
                 System.out.print(" ");
