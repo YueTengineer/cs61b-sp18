@@ -14,6 +14,7 @@ public class ArrayDeque<T> {
         if(size == 0){
             items[0] = item;
             first = 0;
+            last  = 0;
         }else{
             if(size!=items.length){
                 if(first == 0){
@@ -35,6 +36,7 @@ public class ArrayDeque<T> {
         if(size == 0){
             items[0] = item;
             last = 0;
+            first = 0;
         }else{
             if(size!=items.length){
                 if(last == items.length-1){
@@ -117,7 +119,7 @@ public class ArrayDeque<T> {
 
     private void resize(int cap){
         T[] a = (T []) new Object[cap];
-        if(first<last){
+        if(first>last){
             System.arraycopy(items,first,a,0,items.length-first);
             System.arraycopy(items,0,a,items.length-first,last+1);
         }else{
