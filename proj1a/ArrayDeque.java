@@ -47,6 +47,7 @@ public class ArrayDeque<T> {
                 }
             } else{
                 resize(size*refactor);
+                last += 1;
             }
             items[last] = item;
         }
@@ -150,6 +151,6 @@ public class ArrayDeque<T> {
 
     }
     private float getUsageRatio(){
-        return size/items.length;
+        return (float)size/items.length;
     }
 }
