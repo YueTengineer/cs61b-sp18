@@ -8,38 +8,48 @@ public class ArrayDeque<T> {
     public ArrayDeque(){
         items = (T []) new Object[8];
         size = 0;
-        first = 0;
-        last = 7;
     }
 
     public void addFirst(T item){
-        if(size!=items.length){
-            if(first == 0){
-                first = items.length - 1;
-            }else{
-                first -= 1;
+        if(size == 0){
+            items[0] = item;
+            first = 0;
+        }else{
+            if(size!=items.length){
+                if(first == 0){
+                    first = items.length - 1;
+                }else{
+                    first -= 1;
+                }
+                items[first] = item;
+            } else{
+                resize(size*refactor);
+                addFirst(item);
             }
-            items[first] = item;
-        } else{
-            resize(size*refactor);
-            addFirst(item);
         }
+
         size += 1;
     }
 
     public void addLast(T item){
-        if(size!=items.length){
-            if(last == items.length-1){
-                last = 0;
-            }else{
-                last = size+first-items.length;
-                last = convert(last);
+        if(size == 0){
+            items[0] = item;
+            last = 0;
+        }else{
+            if(size!=items.length){
+                if(last == items.length-1){
+                    last = 0;
+                }else{
+                    last = size+first-items.length;
+                    last = convert(last);
+                }
+                items[last] = item;
+            } else{
+                resize(size*refactor);
+                addLast(item);
             }
-            items[last] = item;
-        } else{
-            resize(size*refactor);
-            addLast(item);
         }
+
         size += 1;
     }
 
@@ -121,19 +131,19 @@ public class ArrayDeque<T> {
     /* when first/last pointer becomes negative, convert the index to the corresponding positive */
     private int convert(int i){
         if(i>=0){
-            return i-1;
+            return i;
         }else{
             return items.length+i;
         }
     }
     public T get(int i){
-        if(first>last){
+        if(first<=last){
             return items[first+i];
         }else{
             if(first+i<items.length){
                 return items[first+i];
             }else{
-                return items[i+first-items.length-1];
+                return items[i+first-items.length];
             }
         }
 
@@ -141,5 +151,4 @@ public class ArrayDeque<T> {
     private float getUsageRatio(){
         return size/items.length;
     }
-
 }
