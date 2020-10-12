@@ -140,6 +140,7 @@ public class ArrayDeque<T> {
             return items.length+i;
         }
     }
+
     public T get(int i) {
         if (first <= last) {
             return items[first+i];
