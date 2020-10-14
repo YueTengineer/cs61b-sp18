@@ -22,14 +22,14 @@ public class ArrayDeque<T> {
                 } else {
                     first -= 1;
                 }
-
+                
             } else {
                 resize(size * refactor);
+
                 first = items.length - 1;
             }
             items[first] = item;
         }
-
         size += 1;
     }
 
@@ -52,7 +52,6 @@ public class ArrayDeque<T> {
             }
             items[last] = item;
         }
-
         size += 1;
     }
 
@@ -68,6 +67,7 @@ public class ArrayDeque<T> {
             first += 1;
         }
         size -= 1;
+
         if(items.length >= 16 && getUsageRatio()<0.25) {
             resize((int)(0.5 * items.length));
         }
@@ -78,7 +78,6 @@ public class ArrayDeque<T> {
         if (this.isEmpty()) {
             return null;
         }
-
         T temp = items[last];
         items[last] = null;
         if (last==0) {
@@ -101,6 +100,7 @@ public class ArrayDeque<T> {
         return size;
     }
 
+
     public void printDeque() {
         if(first <= last) {
             for(int i = first; i <= last; i++) {
@@ -121,6 +121,7 @@ public class ArrayDeque<T> {
 
     private void resize(int cap) {
         T[] a = (T []) new Object[cap];
+
         if(first > last) {
             System.arraycopy(items,first,a,0,items.length-first);
             System.arraycopy(items,0,a,items.length-first,last+1);
@@ -153,6 +154,7 @@ public class ArrayDeque<T> {
         }
 
     }
+
     private float getUsageRatio() {
         return (float) size/items.length;
     }
