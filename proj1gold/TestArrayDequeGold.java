@@ -26,30 +26,30 @@ public class TestArrayDequeGold {
         int size = 0;
         String info = "";
 
-        for (int i = 0; i < 50; i +=1) {
+        for (int i = 0; i < 100; i +=1) {
             double r = StdRandom.uniform();
             Integer a = (int)StdRandom.uniform(1,11);
             if (size == 0) {
                 testAddLast(a);
-                info += "testAddLast("+a.toString()+")\n";
+                info += "addLast("+a.toString()+")\n";
                 size += 1;
                 continue;
             }
             if (r < 0.25) {
                 testAddFirst(a);
-                info += "testAddFirst("+a.toString()+")\n";
+                info += "addFirst("+a.toString()+")\n";
                 size += 1;
             } else if(r < 0.5) {
                 testAddLast(a);
-                info += "testAddLast("+a.toString()+")\n";
+                info += "addLast("+a.toString()+")\n";
                 size += 1;
             } else if(r < 0.75) {
                 testRemoveFirst(info);
-                info += "testRemoveFirst("+a.toString()+")\n";
+                info += "removeFirst()\n";
                 size -= 1;
             } else {
                 testRemoveLast(info);
-                info += "testRemoveLast("+a.toString()+")\n";
+                info += "removeLast()\n";
                 size -= 1;
             }
         }
