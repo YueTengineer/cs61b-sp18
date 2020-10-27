@@ -15,10 +15,10 @@ public class TestArrayDequeGold {
     }
 
     public void testRemoveFirst(String s) {
-        assertEquals(s,student.removeFirst(),solution.removeFirst());
+        assertEquals(s,solution.removeFirst(),student.removeFirst());
     }
     public void testRemoveLast(String s) {
-        assertEquals(s,student.removeLast(),solution.removeLast());
+        assertEquals(s,solution.removeLast(),student.removeLast());
     }
 
     @Test
