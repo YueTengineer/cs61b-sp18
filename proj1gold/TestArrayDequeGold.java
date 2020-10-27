@@ -31,30 +31,30 @@ public class TestArrayDequeGold {
             Integer a = (int)StdRandom.uniform(1,11);
             if (size == 0) {
                 if (StdRandom.uniform() > 0.5) {
-                    testAddLast(a);
                     info += "addLast("+a.toString()+")\n";
+                    testAddLast(a);
                 } else {
-                    testAddFirst(a);
                     info += "addFirst("+a.toString()+")\n";
+                    testAddFirst(a);
                 }
                 size += 1;
                 continue;
             }
             if (r < 0.3) {
-                testAddFirst(a);
                 info += "addFirst("+a.toString()+")\n";
+                testAddFirst(a);
                 size += 1;
             } else if(r < 0.6) {
-                testAddLast(a);
                 info += "addLast("+a.toString()+")\n";
+                testAddLast(a);
                 size += 1;
             } else if(r < 0.8) {
-                testRemoveFirst(info);
                 info += "removeFirst()\n";
+                testRemoveFirst(info);
                 size -= 1;
             } else {
-                testRemoveLast(info);
                 info += "removeLast()\n";
+                testRemoveLast(info);
                 size -= 1;
             }
         }
