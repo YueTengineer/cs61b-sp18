@@ -36,16 +36,17 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
     @Override
     public void enqueue(T x) throws RuntimeException {
         // TODO: Enqueue the item. Don't forget to increase fillCount and update last.
-        if (this.isFull()) {
+        if (isFull()) {
             throw new RuntimeException("Ring Buffer Overflow") ;
         }
-            rb[last] = x;
-            fillCount += 1;
-            if (last == capacity - 1) {
+        rb[last] = x;
+            /*if (last == capacity - 1) {
                 last = 0;
             } else {
                 last += 1;
-            }
+            }*/
+        last = (last + 1) % capacity;
+        fillCount += 1;
     }
 
 
@@ -57,16 +58,18 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
     @Override
     public T dequeue() throws RuntimeException {
         // TODO: Dequeue the first item. Don't forget to decrease fillCount and update
-        if (this.isEmpty()) {
+        if (isEmpty()) {
             throw new RuntimeException("Ring Buffer Underflow") ;
         }
         T value = rb[first];
-        fillCount -= 1;
-        if (first == capacity - 1) {
+
+        /* if (first == capacity - 1) {
                 first = 0;
         } else {
             first += 1;
-        }
+        } */
+        first = (first + 1) % capacity;
+        fillCount -= 1;
         return value;
     }
 
@@ -76,7 +79,7 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
     @Override
     public T peek() throws RuntimeException {
         // TODO: Return the first item. None of your instance variables should change.
-        if (this.isEmpty()) {
+        if (isEmpty()) {
             throw new RuntimeException("Ring Buffer Underflow");
         }
         return rb[first];
@@ -99,11 +102,7 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
         }
         public T next() {
             T value = rb[pos];
-            if (pos == capacity) {
-                pos = 0;
-            } else {
-                pos += 1;
-            }
+            pos = (pos + 1) % capacity;
             cnt += 1;
             return value;
         }
