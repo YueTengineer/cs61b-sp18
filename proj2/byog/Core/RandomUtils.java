@@ -10,7 +10,6 @@ import java.util.Random;
  * modify this file.
  * <p>
  * Adapted from https://introcs.cs.princeton.edu/java/22library/StdRandom.java.html
-*
  */
 public class RandomUtils {
 
