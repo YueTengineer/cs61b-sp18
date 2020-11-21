@@ -16,7 +16,7 @@ public class Game {
     /* Feel free to change the width and height. */
     public static final int WIDTH = 70;
     public static final int HEIGHT = 50;
-    private static long SEED = 41714058;
+    private static long SEED;
 
     /**
      * Method used for playing a fresh game. The game should start from the main menu.
@@ -54,6 +54,7 @@ public class Game {
                 finalWorldFrame[x][y] = Tileset.NOTHING;
             }
         }
+
         mapGenerator(finalWorldFrame);
 
         return finalWorldFrame;
