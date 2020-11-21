@@ -45,8 +45,7 @@ public class Game {
         //To start a game with ‘N’ or 'n' and end with S : N####S, digits ### is seed.
         String regex = "[^0-9]+";
         String seed = input.replaceAll(regex,"");
-        SEED = Integer.parseInt(seed);
-
+        SEED = Long.parseLong(seed);
         // initialize tiles
         TETile[][] finalWorldFrame = new TETile[WIDTH][HEIGHT];
         for (int x = 0; x < WIDTH; x += 1) {
@@ -59,7 +58,7 @@ public class Game {
 
         return finalWorldFrame;
     }
-
+    
     public void mapGenerator(TETile[][] world) {
         List<Room> existingrooms = new ArrayList<>();
         int times = 300;
@@ -71,12 +70,12 @@ public class Game {
                 r.addTo(world);
             }
         }
-
         hallwayGenerator(world);
         connect(existingrooms,random,world);
         wallPlaster(world);
         unCarving(world,existingrooms);
     }
+
     // fill the rest of the world with walls!
     private void wallPlaster(TETile[][] world) {
         for (int x = 0; x < WIDTH; x += 1){
@@ -87,6 +86,7 @@ public class Game {
             }
         }
     }
+
     // turn the surplus walls back to nothing
     private void unCarving (TETile[][] world,List<Room> er) {
 
@@ -101,6 +101,7 @@ public class Game {
             }
         }
     }
+
     private void connect(List<Room> er, Random random, TETile [][] world) {
         for (Room rm : er) {
             Map<String,List<Position>> sidemap = rm.checkhallways(world);
