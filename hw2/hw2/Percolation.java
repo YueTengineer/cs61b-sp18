@@ -20,13 +20,6 @@ public class Percolation {
         pcl2 = new WeightedQuickUnionUF(N * N + 1);
         state = new boolean[N][N];
         length = N;
-        // connect top layer to the virtual top site and bottom layer to the virtual bottom site.
-        for (int i = 0; i < N; i += 1) {
-            pcl.union(N * N,i);
-            pcl.union(N * N + 1,N * N - i - 1);
-            pcl2.union(N * N,i);
-        }
-
     }
     public void open(int row, int col) {
         if (state[row][col] == true) {
@@ -35,6 +28,9 @@ public class Percolation {
             state[row][col] = true;
             open_num += 1;
             if (row == 0) {
+                // connect top layer site to the virtual top site.
+                pcl.union(N * N,dChange(row,col));
+                pcl2.union(N * N,dChange(row,col));
                 if (col == 0) {
                     if (isOpen(row + 1, col)) {
                         pcl.union(dChange(row, col),dChange(row + 1, col));
@@ -68,6 +64,8 @@ public class Percolation {
                     }
                 }
             } else if (row == length - 1) {
+                // connect bottom layer to the virtual bottom site.
+                pcl.union(N * N + 1,dChange(row,col));
                 if (col == 0) {
                     if (isOpen(row - 1, col)) {
                         pcl.union(dChange(row, col),dChange(row - 1, col));
@@ -167,5 +165,5 @@ public class Percolation {
     }
     public static void main(String[] args) {
 
-    }   // use for unit testing (not required)
+    }  
 }
