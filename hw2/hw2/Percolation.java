@@ -101,22 +101,51 @@ public class Percolation {
                     }
                 }
             } else {
-                if (isOpen(row + 1, col)) {
-                    pcl.union(dChange(row, col),dChange(row + 1, col));
-                    pcl2.union(dChange(row, col),dChange(row + 1, col));
+                if (col == 0) {
+                    if (isOpen(row + 1, col)) {
+                        pcl.union(dChange(row, col),dChange(row + 1, col));
+                        pcl2.union(dChange(row, col),dChange(row + 1, col));
+                    }
+                    if (isOpen(row - 1, col)) {
+                        pcl.union(dChange(row, col),dChange(row - 1, col));
+                        pcl2.union(dChange(row, col),dChange(row - 1, col));
+                    }
+                    if (isOpen(row , col + 1)) {
+                        pcl.union(dChange(row, col),dChange(row , col + 1));
+                        pcl2.union(dChange(row, col),dChange(row , col + 1));
+                    }
+                } else if (col == length -1) {
+                    if (isOpen(row + 1, col)) {
+                        pcl.union(dChange(row, col),dChange(row + 1, col));
+                        pcl2.union(dChange(row, col),dChange(row + 1, col));
+                    }
+                    if (isOpen(row - 1, col)) {
+                        pcl.union(dChange(row, col),dChange(row - 1, col));
+                        pcl2.union(dChange(row, col),dChange(row - 1, col));
+                    }
+                    if (isOpen(row , col - 1)) {
+                        pcl.union(dChange(row, col),dChange(row , col - 1));
+                        pcl2.union(dChange(row, col),dChange(row , col - 1));
+                    }
+                } else {
+                    if (isOpen(row + 1, col)) {
+                        pcl.union(dChange(row, col),dChange(row + 1, col));
+                        pcl2.union(dChange(row, col),dChange(row + 1, col));
+                    }
+                    if (isOpen(row - 1, col)) {
+                        pcl.union(dChange(row, col),dChange(row - 1, col));
+                        pcl2.union(dChange(row, col),dChange(row - 1, col));
+                    }
+                    if (isOpen(row , col - 1)) {
+                        pcl.union(dChange(row, col),dChange(row , col - 1));
+                        pcl2.union(dChange(row, col),dChange(row , col - 1));
+                    }
+                    if (isOpen(row , col + 1)) {
+                        pcl.union(dChange(row, col),dChange(row , col + 1));
+                        pcl2.union(dChange(row, col),dChange(row , col + 1));
+                    }
                 }
-                if (isOpen(row - 1, col)) {
-                    pcl.union(dChange(row, col),dChange(row - 1, col));
-                    pcl2.union(dChange(row, col),dChange(row - 1, col));
-                }
-                if (isOpen(row , col - 1)) {
-                    pcl.union(dChange(row, col),dChange(row , col - 1));
-                    pcl2.union(dChange(row, col),dChange(row , col - 1));
-                }
-                if (isOpen(row , col + 1)) {
-                    pcl.union(dChange(row, col),dChange(row , col + 1));
-                    pcl2.union(dChange(row, col),dChange(row , col + 1));
-                }
+
             }
         }
     }
