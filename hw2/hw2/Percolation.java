@@ -8,7 +8,7 @@ public class Percolation {
     // false:blocked true:open
     private boolean [][] state;
     private int open_num = 0;
-    int length;
+    private int length;
     public Percolation(int N) {
         if (N <= 0) {
             throw new IllegalArgumentException("N should be greater than zero.");
@@ -23,7 +23,7 @@ public class Percolation {
         // connect top layer to the virtual top site and bottom layer to the virtual bottom site.
         for (int i = 0; i < N; i += 1) {
             pcl.union(N * N,i);
-            pcl.union(N * N + 1,N * N - i);
+            pcl.union(N * N + 1,N * N - i - 1);
             pcl2.union(N * N,i);
         }
 

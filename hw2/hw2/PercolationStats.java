@@ -3,11 +3,11 @@ package hw2;
 import edu.princeton.cs.algs4.StdRandom;
 
 public class PercolationStats {
-    double mean;
-    double stddev;
-    double confidencelow;
-    double confidencehigh;
-    int [] openls;
+    private double mean;
+    private double stddev;
+    private double confidencelow;
+    private double confidencehigh;
+    private int [] openls;
     public PercolationStats(int N, int T, PercolationFactory pf) {
         if (N <= 0 || T <= 0) {
             throw new IllegalArgumentException("N and T should be greater than zero.");
