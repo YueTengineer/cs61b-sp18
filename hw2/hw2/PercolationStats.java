@@ -20,8 +20,8 @@ public class PercolationStats {
             while (!temp.percolates()) {
                 temp.open((int) StdRandom.uniform(N), (int) StdRandom.uniform(N));
             }
-            openls[i] = temp.numberOfOpenSites();
-            mean_sum += temp.numberOfOpenSites();
+            openls[i] = temp.numberOfOpenSites() / (N * N);
+            mean_sum += temp.numberOfOpenSites() / (N * N);
         }
         mean = mean_sum / T;
         // calculate the stddev.

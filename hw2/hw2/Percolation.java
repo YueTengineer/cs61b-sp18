@@ -25,129 +25,138 @@ public class Percolation {
         if (state[row][col] == true) {
             return;
         } else {
+            if (length == 1) {
+                state[row][col] = true;
+                open_num += 1;
+                pcl.union(0,1);
+                pcl2.union(0,1);
+                pcl.union(0,2);
+            }
             state[row][col] = true;
             open_num += 1;
-            if (row == 0) {
-                // connect top layer site to the virtual top site.
-                pcl.union(length * length,dChange(row,col));
-                pcl2.union(length * length,dChange(row,col));
-                if (col == 0) {
-                    if (isOpen(row + 1, col)) {
-                        pcl.union(dChange(row, col),dChange(row + 1, col));
-                        pcl2.union(dChange(row, col),dChange(row + 1, col));
-                    }
-                    if (isOpen(row , col + 1)) {
-                        pcl.union(dChange(row, col),dChange(row , col + 1));
-                        pcl2.union(dChange(row, col),dChange(row , col + 1));
-                    }
-                } else if (col == length - 1) {
-                    if (isOpen(row + 1, col)) {
-                        pcl.union(dChange(row, col),dChange(row + 1, col));
-                        pcl2.union(dChange(row, col),dChange(row + 1, col));
-                    }
-                    if (isOpen(row , col - 1)) {
-                        pcl.union(dChange(row, col),dChange(row , col - 1));
-                        pcl2.union(dChange(row, col),dChange(row , col - 1));
-                    }
-                } else {
-                    if (isOpen(row + 1, col)) {
-                        pcl.union(dChange(row, col),dChange(row + 1, col));
-                        pcl2.union(dChange(row, col),dChange(row + 1, col));
-                    }
-                    if (isOpen(row , col - 1)) {
-                        pcl.union(dChange(row, col),dChange(row , col - 1));
-                        pcl2.union(dChange(row, col),dChange(row , col - 1));
-                    }
-                    if (isOpen(row , col + 1)) {
-                        pcl.union(dChange(row, col),dChange(row , col + 1));
-                        pcl2.union(dChange(row, col),dChange(row , col + 1));
-                    }
-                }
-            } else if (row == length - 1) {
-                // connect bottom layer to the virtual bottom site.
-                pcl.union(length * length + 1,dChange(row,col));
-                if (col == 0) {
-                    if (isOpen(row - 1, col)) {
-                        pcl.union(dChange(row, col),dChange(row - 1, col));
-                        pcl2.union(dChange(row, col),dChange(row - 1, col));
-                    }
-                    if (isOpen(row , col + 1)) {
-                        pcl.union(dChange(row, col),dChange(row , col + 1));
-                        pcl2.union(dChange(row, col),dChange(row , col + 1));
-                    }
-                } else if (col == length - 1) {
-                    if (isOpen(row - 1, col)) {
-                        pcl.union(dChange(row, col),dChange(row - 1, col));
-                        pcl2.union(dChange(row, col),dChange(row - 1, col));
-                    }
-                    if (isOpen(row , col - 1)) {
-                        pcl.union(dChange(row, col),dChange(row , col - 1));
-                        pcl2.union(dChange(row, col),dChange(row , col - 1));
-                    }
-                } else {
-                    if (isOpen(row - 1, col)) {
-                        pcl.union(dChange(row, col),dChange(row - 1, col));
-                        pcl2.union(dChange(row, col),dChange(row - 1, col));
-                    }
-                    if (isOpen(row , col - 1)) {
-                        pcl.union(dChange(row, col),dChange(row , col - 1));
-                        pcl2.union(dChange(row, col),dChange(row , col - 1));
-                    }
-                    if (isOpen(row , col + 1)) {
-                        pcl.union(dChange(row, col),dChange(row , col + 1));
-                        pcl2.union(dChange(row, col),dChange(row , col + 1));
-                    }
-                }
-            } else {
-                if (col == 0) {
-                    if (isOpen(row + 1, col)) {
-                        pcl.union(dChange(row, col),dChange(row + 1, col));
-                        pcl2.union(dChange(row, col),dChange(row + 1, col));
-                    }
-                    if (isOpen(row - 1, col)) {
-                        pcl.union(dChange(row, col),dChange(row - 1, col));
-                        pcl2.union(dChange(row, col),dChange(row - 1, col));
-                    }
-                    if (isOpen(row , col + 1)) {
-                        pcl.union(dChange(row, col),dChange(row , col + 1));
-                        pcl2.union(dChange(row, col),dChange(row , col + 1));
-                    }
-                } else if (col == length -1) {
-                    if (isOpen(row + 1, col)) {
-                        pcl.union(dChange(row, col),dChange(row + 1, col));
-                        pcl2.union(dChange(row, col),dChange(row + 1, col));
-                    }
-                    if (isOpen(row - 1, col)) {
-                        pcl.union(dChange(row, col),dChange(row - 1, col));
-                        pcl2.union(dChange(row, col),dChange(row - 1, col));
-                    }
-                    if (isOpen(row , col - 1)) {
-                        pcl.union(dChange(row, col),dChange(row , col - 1));
-                        pcl2.union(dChange(row, col),dChange(row , col - 1));
-                    }
-                } else {
-                    if (isOpen(row + 1, col)) {
-                        pcl.union(dChange(row, col),dChange(row + 1, col));
-                        pcl2.union(dChange(row, col),dChange(row + 1, col));
-                    }
-                    if (isOpen(row - 1, col)) {
-                        pcl.union(dChange(row, col),dChange(row - 1, col));
-                        pcl2.union(dChange(row, col),dChange(row - 1, col));
-                    }
-                    if (isOpen(row , col - 1)) {
-                        pcl.union(dChange(row, col),dChange(row , col - 1));
-                        pcl2.union(dChange(row, col),dChange(row , col - 1));
-                    }
-                    if (isOpen(row , col + 1)) {
-                        pcl.union(dChange(row, col),dChange(row , col + 1));
-                        pcl2.union(dChange(row, col),dChange(row , col + 1));
-                    }
-                }
-
-            }
+            connectSurroundings(row,col);
         }
     }
+    private void connectSurroundings(int row, int col) {
+        if (row == 0) {
+            // connect top layer site to the virtual top site.
+            pcl.union(length * length,dChange(row,col));
+            pcl2.union(length * length,dChange(row,col));
+            if (col == 0) {
+                if (isOpen(row + 1, col)) {
+                    pcl.union(dChange(row, col),dChange(row + 1, col));
+                    pcl2.union(dChange(row, col),dChange(row + 1, col));
+                }
+                if (isOpen(row , col + 1)) {
+                    pcl.union(dChange(row, col),dChange(row , col + 1));
+                    pcl2.union(dChange(row, col),dChange(row , col + 1));
+                }
+            } else if (col == length - 1) {
+                if (isOpen(row + 1, col)) {
+                    pcl.union(dChange(row, col),dChange(row + 1, col));
+                    pcl2.union(dChange(row, col),dChange(row + 1, col));
+                }
+                if (isOpen(row , col - 1)) {
+                    pcl.union(dChange(row, col),dChange(row , col - 1));
+                    pcl2.union(dChange(row, col),dChange(row , col - 1));
+                }
+            } else {
+                if (isOpen(row + 1, col)) {
+                    pcl.union(dChange(row, col),dChange(row + 1, col));
+                    pcl2.union(dChange(row, col),dChange(row + 1, col));
+                }
+                if (isOpen(row , col - 1)) {
+                    pcl.union(dChange(row, col),dChange(row , col - 1));
+                    pcl2.union(dChange(row, col),dChange(row , col - 1));
+                }
+                if (isOpen(row , col + 1)) {
+                    pcl.union(dChange(row, col),dChange(row , col + 1));
+                    pcl2.union(dChange(row, col),dChange(row , col + 1));
+                }
+            }
+        } else if (row == length - 1) {
+            // connect bottom layer to the virtual bottom site.
+            pcl.union(length * length + 1,dChange(row,col));
+            if (col == 0) {
+                if (isOpen(row - 1, col)) {
+                    pcl.union(dChange(row, col),dChange(row - 1, col));
+                    pcl2.union(dChange(row, col),dChange(row - 1, col));
+                }
+                if (isOpen(row , col + 1)) {
+                    pcl.union(dChange(row, col),dChange(row , col + 1));
+                    pcl2.union(dChange(row, col),dChange(row , col + 1));
+                }
+            } else if (col == length - 1) {
+                if (isOpen(row - 1, col)) {
+                    pcl.union(dChange(row, col),dChange(row - 1, col));
+                    pcl2.union(dChange(row, col),dChange(row - 1, col));
+                }
+                if (isOpen(row , col - 1)) {
+                    pcl.union(dChange(row, col),dChange(row , col - 1));
+                    pcl2.union(dChange(row, col),dChange(row , col - 1));
+                }
+            } else {
+                if (isOpen(row - 1, col)) {
+                    pcl.union(dChange(row, col),dChange(row - 1, col));
+                    pcl2.union(dChange(row, col),dChange(row - 1, col));
+                }
+                if (isOpen(row , col - 1)) {
+                    pcl.union(dChange(row, col),dChange(row , col - 1));
+                    pcl2.union(dChange(row, col),dChange(row , col - 1));
+                }
+                if (isOpen(row , col + 1)) {
+                    pcl.union(dChange(row, col),dChange(row , col + 1));
+                    pcl2.union(dChange(row, col),dChange(row , col + 1));
+                }
+            }
+        } else {
+            if (col == 0) {
+                if (isOpen(row + 1, col)) {
+                    pcl.union(dChange(row, col),dChange(row + 1, col));
+                    pcl2.union(dChange(row, col),dChange(row + 1, col));
+                }
+                if (isOpen(row - 1, col)) {
+                    pcl.union(dChange(row, col),dChange(row - 1, col));
+                    pcl2.union(dChange(row, col),dChange(row - 1, col));
+                }
+                if (isOpen(row , col + 1)) {
+                    pcl.union(dChange(row, col),dChange(row , col + 1));
+                    pcl2.union(dChange(row, col),dChange(row , col + 1));
+                }
+            } else if (col == length -1) {
+                if (isOpen(row + 1, col)) {
+                    pcl.union(dChange(row, col),dChange(row + 1, col));
+                    pcl2.union(dChange(row, col),dChange(row + 1, col));
+                }
+                if (isOpen(row - 1, col)) {
+                    pcl.union(dChange(row, col),dChange(row - 1, col));
+                    pcl2.union(dChange(row, col),dChange(row - 1, col));
+                }
+                if (isOpen(row , col - 1)) {
+                    pcl.union(dChange(row, col),dChange(row , col - 1));
+                    pcl2.union(dChange(row, col),dChange(row , col - 1));
+                }
+            } else {
+                if (isOpen(row + 1, col)) {
+                    pcl.union(dChange(row, col),dChange(row + 1, col));
+                    pcl2.union(dChange(row, col),dChange(row + 1, col));
+                }
+                if (isOpen(row - 1, col)) {
+                    pcl.union(dChange(row, col),dChange(row - 1, col));
+                    pcl2.union(dChange(row, col),dChange(row - 1, col));
+                }
+                if (isOpen(row , col - 1)) {
+                    pcl.union(dChange(row, col),dChange(row , col - 1));
+                    pcl2.union(dChange(row, col),dChange(row , col - 1));
+                }
+                if (isOpen(row , col + 1)) {
+                    pcl.union(dChange(row, col),dChange(row , col + 1));
+                    pcl2.union(dChange(row, col),dChange(row , col + 1));
+                }
+            }
 
+        }
+    }
     public boolean isOpen(int row, int col) {
         return state[row][col] == true;
     }  // is the site (row, col) open?
