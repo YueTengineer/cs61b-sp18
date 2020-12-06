@@ -30,9 +30,9 @@ public class PercolationStats {
         for (int i = 0; i < T; i += 1) {
             std_sum += (openls[i] - mean) * (openls[i] - mean);
         }
-        stddev = std_sum / (T - 1);
-        confidencelow = mean - 1.96 * Math.sqrt(stddev) / Math.sqrt(T);
-        confidencehigh = mean + 1.96 * Math.sqrt(stddev) / Math.sqrt(T);
+        stddev = Math.sqrt(std_sum / (T - 1));
+        confidencelow = mean - 1.96 * stddev / Math.sqrt(T);
+        confidencehigh = mean + 1.96 * stddev / Math.sqrt(T);
     }
 
     public double mean() {

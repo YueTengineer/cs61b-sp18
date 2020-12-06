@@ -31,10 +31,12 @@ public class Percolation {
                 pcl.union(0,1);
                 pcl2.union(0,1);
                 pcl.union(0,2);
+            } else {
+                state[row][col] = true;
+                open_num += 1;
+                connectSurroundings(row,col);
             }
-            state[row][col] = true;
-            open_num += 1;
-            connectSurroundings(row,col);
+
         }
     }
     private void connectSurroundings(int row, int col) {
