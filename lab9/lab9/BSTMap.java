@@ -145,7 +145,7 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
     /* Returns a Set view of the keys contained in this map. */
     @Override
     public Set<K> keySet() {
-        return keySet();
+        return keyset;
     }
 
     public void delete(K key) {
