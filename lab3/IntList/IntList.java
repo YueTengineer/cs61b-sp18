@@ -117,6 +117,19 @@ public class IntList {
         if (A == null) {
             return null;
         }
+        /**
+        IntList prev = null;
+        IntList cur = A;
+        IntList next = null;
+        while (cur != null) {
+            next = cur.rest;
+            cur.rest = prev;
+            prev = cur;
+            cur = next;
+        }
+        A = prev;
+        return A;
+         **/
         IntList reverse = new IntList(A.first, null);
         IntList res = A;
         res = res.rest;
@@ -124,12 +137,13 @@ public class IntList {
             reverse = new IntList(res.first,reverse);
             res = res.rest;
         }
+        IntList ls = reverse;
         while (A != null) {
             A.first = reverse.first;
             reverse = reverse.rest;
             A = A.rest;
         }
-        return reverse;
+        return ls;
     }
 
     public static void main(String[] args) {
