@@ -65,6 +65,7 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         if ((index > size) || (index < 1)) {
             return false;
         }
+
         return true;
     }
 
@@ -133,6 +134,7 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
      * Inserts an item with the given priority value. This is enqueue, or offer.
      * To implement this method, add it to the end of the ArrayList, then swim it.
      */
+
     @Override
     public void insert(T item, double priority) {
         /* If the array is totally full, resize. */
@@ -142,14 +144,13 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         contents[size + 1] = new Node(item, priority);
         size += 1;
         swim(size);
-
-
     }
 
     /**
      * Returns the Node with the smallest priority value, but does not remove it
      * from the heap. To implement this, return the item in the 1st position of the ArrayList.
      */
+
     @Override
     public T peek() {
         return contents[1].myItem;
@@ -166,11 +167,14 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
      */
     @Override
     public T removeMin() {
+
         Node minNode = contents[1];
         swap(size, 1);
         contents[size] = null;
-        size -= 1;
-        sink(1);
+        if (size > 1) {
+            size -= 1;
+            sink(1);
+        }
         return minNode.myItem;
     }
 
@@ -255,7 +259,7 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
             myPriority = priority;
         }
 
-        public T item(){
+        public T item() {
             return myItem;
         }
 
@@ -270,7 +274,9 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
     }
 
 
-    /** Helper function to resize the backing array when necessary. */
+    /**
+     * Helper function to resize the backing array when necessary.
+     */
     private void resize(int capacity) {
         Node[] temp = new ArrayHeap.Node[capacity];
         for (int i = 1; i < this.contents.length; i++) {
@@ -431,4 +437,21 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         }
     }
 
+    @Test
+    public void testInsertAndRemove() {
+        ExtrinsicPQ<String> pq = new ArrayHeap<>();
+        pq.insert("c", 3);
+        pq.insert("i", 9);
+        pq.removeMin();
+        pq.insert("d", 4);
+        pq.insert("a", 1);
+        pq.insert("h", 8);
+        pq.removeMin();
+        pq.insert("e", 5);
+        pq.insert("b", 2);
+        pq.insert("c", 3);
+        pq.removeMin();
+        pq.insert("d", 4);
+        System.out.println(pq.toString());
+    }
 }
