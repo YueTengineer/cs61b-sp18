@@ -2,6 +2,7 @@ package hw3.hash;
 
 import java.util.List;
 
+
 public class OomageTestUtility {
     public static boolean haveNiceHashCodeSpread(List<Oomage> oomages, int M) {
         /* TODO:
@@ -12,6 +13,17 @@ public class OomageTestUtility {
          * and ensure that no bucket has fewer than N / 50
          * Oomages and no bucket has more than N / 2.5 Oomages.
          */
-        return false;
+        int N = oomages.size();
+        int[] ls = new int[M];
+
+        for (Oomage oo: oomages) {
+            int bucketNum = (oo.hashCode() & 0x7FFFFFFF) % M;
+            ls[bucketNum] += 1;
+        }
+        for (int num: ls) {
+            if (num <= N / 50 || num >= N / 2.5) return false;
+        }
+
+        return true;
     }
 }

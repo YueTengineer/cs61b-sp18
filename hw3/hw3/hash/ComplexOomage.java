@@ -10,6 +10,7 @@ public class ComplexOomage implements Oomage {
     private static final double WIDTH = 0.05;
 
     @Override
+    // change the base to 31 would be a good idea. (Just like the String hashcode method used by Java.)
     public int hashCode() {
         int total = 0;
         for (int x : params) {

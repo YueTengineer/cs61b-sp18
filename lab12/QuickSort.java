@@ -64,6 +64,7 @@ public class QuickSort {
     /** Returns a Queue that contains the given items sorted from least to greatest. */
     public static <Item extends Comparable> Queue<Item> quickSort(
             Queue<Item> items) {
+
         if (items.size() <= 1) return items;
 
         Item rand = getRandomItem(items);
@@ -74,6 +75,7 @@ public class QuickSort {
         Queue<Item> left = quickSort(less);
         Queue<Item> right = quickSort(greater);
         items = catenate(left,catenate(equal,right));
+
         return items;
     }
 
