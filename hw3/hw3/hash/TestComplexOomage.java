@@ -40,10 +40,10 @@ public class TestComplexOomage {
 
     @Test
     public void testWithDeadlyParams() {
-        List<Oomage> deadlyList = new ArrayList<>();
-
+        List<Oomage> deadlyList = new ArrayList<>(8);
+/*
         for (int i = 0; i < deadlyList.size(); i += 1) {
-            // power(256, 5) > the maximum of int -> accordingly the hashcode would all be 0 -> bucket 0 is over-distributed
+
             int N = StdRandom.uniform(5, 10);
             ArrayList<Integer> params = new ArrayList<>(N);
             for (int j = 0; j < N; j += 1) {
@@ -51,9 +51,22 @@ public class TestComplexOomage {
             }
             deadlyList.add(new ComplexOomage(params));
         }
-        // Your code here.
+*/
+        for (int i = 0; i < 1000; i += 1) {
+            List<Integer> params = new ArrayList<>();
 
-        assertTrue("You Failed!", OomageTestUtility.haveNiceHashCodeSpread(deadlyList, 10));
+            for (int j = 0; j < 4; j += 1) { // Generates random integers for the first 32 bits
+                params.add(StdRandom.uniform(255));
+            }
+
+            for (int j = 0; j < 4; j += 1) { // Add additional fixed 32 bits integers
+                params.add(j);
+            }
+
+            deadlyList.add(new ComplexOomage(params));
+        }
+
+        assertTrue(OomageTestUtility.haveNiceHashCodeSpread(deadlyList, 10));
     }
 
     /** Calls tests for SimpleOomage. */

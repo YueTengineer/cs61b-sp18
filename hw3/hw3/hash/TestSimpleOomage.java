@@ -30,11 +30,8 @@ public class TestSimpleOomage {
             for (int j = 0; j < 256; j += 5) {
                 for (int k = 0; k < 256; k += 5) {
                     SimpleOomage so = new SimpleOomage(i, j, k);
-                    if (ls.contains(so.hashCode())) {
-                        System.out.println( "Collision !");
-                    } else {
-                        ls.add(so.hashCode());
-                    }
+                    assertTrue(!ls.contains(so.hashCode()));
+                    ls.add(so.hashCode());
                 }
             }
         }
