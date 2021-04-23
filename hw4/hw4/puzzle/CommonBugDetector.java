@@ -1,5 +1,7 @@
 package hw4.puzzle;
 
+import edu.princeton.cs.algs4.StdOut;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -83,5 +85,11 @@ public class CommonBugDetector {
                            + " enqueued in your MinPQ and compare to the comments.");
         // if you print out the total number of items enqueued by s3
         // it should be approximately 25, not approximately 50.
+        int sum = 0;
+        for (WorldState ws : s3.solution()) {
+            StdOut.println(ws);
+            sum += 1;
+        }
+        System.out.println("Total number of items in s3:" + sum);
     }
 }
