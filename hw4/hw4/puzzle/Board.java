@@ -133,7 +133,6 @@ public class Board implements WorldState{
 
         if (o == null) return false;
         if (this == o) return true;
-        if (this.getClass() != o.getClass()) return false;
         if (this.size() != other.size()) return false;
 
         for (int y = 0; y < size; y += 1) {
