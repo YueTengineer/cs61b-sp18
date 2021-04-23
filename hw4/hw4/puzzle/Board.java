@@ -20,8 +20,9 @@ import edu.princeton.cs.algs4.Queue;
 
 public class Board implements WorldState{
 
-    int [][] tiles;
-    int size;
+    private int [][] tiles;
+    private int size;
+    private int hashcode;
 
     public Board(int[][] tiles) {
         /*  Mutable board class : If you just copy the reference in the Board constructor,
@@ -81,14 +82,13 @@ public class Board implements WorldState{
     }
 
     public int hamming() {
-        int N = size;
         int sum = 0;
         int correctNum = 0;
         int cnt = 0;
-        for (int y = 0; y < N; y += 1) {
-            for (int x = 0; x < N; x +=1) {
+        for (int y = 0; y < size; y += 1) {
+            for (int x = 0; x < size; x +=1) {
                 cnt += 1;
-                if (cnt == size) continue;
+                if (cnt == size - 1) continue;
                 if (tileAt(y,x) == ++correctNum) {
                     sum += 1;
                 }
@@ -126,11 +126,16 @@ public class Board implements WorldState{
         return manhattan();
     }
 
+    @Override
     public boolean equals(Object o) {
-        int N = size;
         Board other = (Board) o;
-        for (int y = 0; y < N; y += 1) {
-            for (int x = 0; x < N; x +=1) {
+
+        if (o == null) return false;
+        if (this == o) return true;
+        if (this.size() != other.size()) return false;
+
+        for (int y = 0; y < size; y += 1) {
+            for (int x = 0; x < size; x +=1) {
                 if (tileAt(y,x) != other.tileAt(y,x)) {
                     return false;
                 }
@@ -139,6 +144,21 @@ public class Board implements WorldState{
         return true;
     }
 
+    @Override
+    public int hashCode() {
+        int h = hashcode;
+        if (h == 0 && size > 0) {
+            for (int y = 0; y < size; y += 1) {
+                for (int x = 0; x < size; x +=1) {
+                    h += tileAt(y,x);
+                    h = 31 * h;
+                }
+            }
+        }
+        return h;
+    }
+
+    @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
         int N = size();

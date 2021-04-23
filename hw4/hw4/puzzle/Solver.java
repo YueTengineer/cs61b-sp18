@@ -17,8 +17,8 @@ public class Solver {
     */
 
     private int shortestmoves;
-    SearchNode goal;
-    Stack<WorldState> solution = new Stack<>();
+    private SearchNode goal;
+    private Stack<WorldState> solution = new Stack<>();
 
 
     private class SearchNode implements WorldState,Comparable<SearchNode>  {
@@ -67,8 +67,8 @@ public class Solver {
 
         if (pq.min().isGoal()) {
             goalFound = true;
-            goal = new SearchNode(pq.min(),0,null);
             shortestmoves = 0;
+            solution.push(pq.min());
         }
 
         while (!pq.isEmpty()&&!goalFound) {
