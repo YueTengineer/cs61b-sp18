@@ -41,6 +41,9 @@ public class Board implements WorldState{
 
     }
     public int tileAt(int i, int j) {
+        if (i < 0 || i > size - 1 || j < 0 || j > size - 1) { // Corner case check
+            throw new IndexOutOfBoundsException("Invalid index given: i == " + i + " j == " + j);
+        }
         return tiles[i][j];
     }
     public int size() {
@@ -129,12 +132,12 @@ public class Board implements WorldState{
 
     @Override
     public boolean equals(Object o) {
-        Board other = (Board) o;
 
-        if (o == null) return false;
         if (this == o) return true;
-        if (this.getClass() != o.getClass()) return false;
-        if (this.size() != other.size()) return false;
+        if (o == null || this.getClass() != o.getClass()) return false;
+
+        Board other = (Board) o;
+        if (size() != other.size()) return false;
 
 
         for (int y = 0; y < size; y += 1) {
@@ -149,16 +152,7 @@ public class Board implements WorldState{
 
     @Override
     public int hashCode() {
-        int h = hashcode;
-        if (h == 0 && size > 0) {
-            for (int y = 0; y < size; y += 1) {
-                for (int x = 0; x < size; x +=1) {
-                    h += tileAt(y,x);
-                    h = 31 * h;
-                }
-            }
-        }
-        return h;
+        return super.hashCode();
     }
 
     @Override
