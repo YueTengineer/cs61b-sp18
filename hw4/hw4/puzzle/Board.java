@@ -88,14 +88,15 @@ public class Board implements WorldState{
         for (int y = 0; y < size; y += 1) {
             for (int x = 0; x < size; x +=1) {
                 cnt += 1;
-                if (cnt == size - 1) continue;
-                if (tileAt(y,x) == ++correctNum) {
+                if (cnt == size * size) continue;
+                if (tileAt(y,x) != ++correctNum) {
                     sum += 1;
                 }
             }
         }
         return sum;
     }
+
     public int manhattan() {
         int N = size;
         int sum = 0;
@@ -132,11 +133,12 @@ public class Board implements WorldState{
 
         if (o == null) return false;
         if (this == o) return true;
+        if (this.getClass() != o.getClass()) return false;
         if (this.size() != other.size()) return false;
 
         for (int y = 0; y < size; y += 1) {
             for (int x = 0; x < size; x +=1) {
-                if (tileAt(y,x) != other.tileAt(y,x)) {
+                if (tileAt(y,x) == other.tileAt(y,x)) {
                     return false;
                 }
             }

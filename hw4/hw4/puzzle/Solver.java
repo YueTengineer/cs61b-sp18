@@ -42,7 +42,6 @@ public class Solver {
             }
             return estimatedDistance;
         }
-
         @Override
         public Iterable<WorldState> neighbors() {
             return ws.neighbors();
@@ -68,7 +67,7 @@ public class Solver {
         if (pq.min().isGoal()) {
             goalFound = true;
             shortestmoves = 0;
-            solution.push(pq.min());
+            solution.push(pq.min().ws);
         }
 
         while (!pq.isEmpty()&&!goalFound) {
