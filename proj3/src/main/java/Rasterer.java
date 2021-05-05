@@ -10,9 +10,9 @@ import java.util.Map;
  */
 public class Rasterer {
 
-    public static final double ROOT_ULLAT = 37.892195547244356, ROOT_ULLON = -122.2998046875,
-            ROOT_LRLAT = 37.82280243352756, ROOT_LRLON = -122.2119140625;
-    public static final int TILE_SIZE = 256;
+    public static final double ROOT_ULLAT = MapServer.ROOT_ULLAT, ROOT_ULLON = MapServer.ROOT_ULLON,
+            ROOT_LRLAT = MapServer.ROOT_LRLAT, ROOT_LRLON = MapServer.ROOT_LRLON;
+    public static final int TILE_SIZE = MapServer.TILE_SIZE;
     private double raster_ul_lon;
     private double raster_ul_lat;
     private double raster_lr_lon;
@@ -158,7 +158,6 @@ public class Rasterer {
 
         return index;
     }
-
 
 
 }

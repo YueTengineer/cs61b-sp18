@@ -1,5 +1,4 @@
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,8 +24,100 @@ public class Router {
      */
     public static List<Long> shortestPath(GraphDB g, double stlon, double stlat,
                                           double destlon, double destlat) {
-        return null; // FIXME
+        List<Long> sp = new ArrayList<>();
+
+        Map<Long,Long> edgeTo = new HashMap<>();
+        Map<Long,Double> distTo = new HashMap<>();
+        Map<Long,Boolean> marked = new HashMap<>();
+
+        Long sourceId = g.closest(stlon,stlat);
+        Long destId = g.closest(destlon,destlat);
+
+        PriorityQueue<Node> pq = new PriorityQueue<>();
+
+        //Initialize source node.
+        Router r = new Router();
+        Node source = r.new Node(sourceId,g.distance(sourceId,destId));
+        edgeTo.put(sourceId, null);
+        distTo.put(sourceId,0.0);
+        pq.add(source);
+
+        //java utils 自带的 PriorityQueue 不含有 changePriority, 故允许PQ中含有重复的Node.
+
+        while (!pq.isEmpty()) {
+
+            Node curNode = pq.remove();
+            Long curId = curNode.getId();
+            if (marked.containsKey(curId)) continue;
+
+            marked.put(curId,true);
+
+            if (curId.equals(destId)) break;
+
+            for (Long id : g.adjacent(curId)) {
+                //Undirected Graph. A* algorithm.
+                if (!marked.containsKey(id)) {
+
+                    if (!distTo.containsKey(id)) {
+                        distTo.put(id,Double.MAX_VALUE);
+                    }
+
+                    double newDistance = distTo.get(curId) + g.distance(curId, id);
+
+                    if (newDistance < distTo.get(id)) {
+                        distTo.put(id,newDistance);
+                        edgeTo.put(id,curId);
+                        Node newNode = r.new Node(id, newDistance + g.distance(id,destId));
+                        pq.add(newNode);
+                    }
+                }
+            }
+        }
+
+        Long Id = destId;
+        while (Id != null) {
+            sp.add(Id);
+            Id = edgeTo.get(Id);
+        }
+
+        return r.reverse(sp);
+
     }
+
+    private ArrayList<Long> reverse(List<Long> ls) {
+        ArrayList reverse = new ArrayList();
+        for (int i = ls.size() - 1; i >= 0 ; i-= 1) {
+            reverse.add(ls.get(i));
+        }
+        return reverse;
+    }
+
+    private class Node implements Comparable<Node> {
+        private Long id;
+        private double priority;
+        public Node(Long id, double priority) {
+            this.id = id;
+            this.priority = priority;
+        }
+
+        @Override
+        public int compareTo(Node o) {
+            if (this.priority < o.priority) {
+                return -1;
+            } else if (this.priority > o.priority) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
+
+        public Long getId() {
+            return id;
+        }
+
+    }
+
+
 
     /**
      * Create the list of directions corresponding to a route on the graph.
@@ -37,8 +128,92 @@ public class Router {
      * route.
      */
     public static List<NavigationDirection> routeDirections(GraphDB g, List<Long> route) {
-        return null; // FIXME
+        if (route.size() < 2) {
+            throw new IllegalArgumentException("Route size is not sufficient!");
+        }
+
+        if (route.size() == 3) {
+
+        }
+
+        List<NavigationDirection> result = new ArrayList<>();
+
+        int direction = 0;
+        double distance = 0.0;
+
+        for (int i = 1; i < route.size() - 1; i += 1) {
+
+            Long prevNode = route.get(i - 1);
+            Long curNode = route.get(i);
+            Long nextNode = route.get(i + 1);
+
+            distance += g.distance(prevNode, curNode);
+
+
+            String curwayName = g.getWayName(prevNode, curNode);
+            String nextwayName = g.getWayName(curNode, nextNode);
+
+            boolean isFinal = i + 1 == route.size() - 1;
+
+            // When wayName gets changed, it suggests a turning point. Then the
+            if (!curwayName.equals(nextwayName)) {
+
+                NavigationDirection nd = new NavigationDirection(direction,curwayName,distance);
+                result.add(nd);
+
+
+                double curAngle = g.bearing(prevNode, curNode);
+                double nextAngle = g.bearing(curNode, nextNode);
+                direction = relativeDirection(nextAngle - curAngle);
+
+                distance = 0;
+
+            }
+
+            // Calculate the last part of the route.
+            if (isFinal) {
+
+                if (!curwayName.equals(nextwayName)) {
+                    distance = g.distance(curNode,nextNode);
+                } else {
+                    distance += g.distance(curNode,nextNode);
+                }
+
+                NavigationDirection nd = new NavigationDirection(direction,nextwayName,distance);
+                result.add(nd);
+            }
+
+        }
+        return result;
     }
+
+    private static int relativeDirection(double angle) {
+        if (angle > 180) {
+            angle = angle - 360;
+        }
+        if (angle < -180) {
+            angle = 360 + angle;
+        }
+
+        if (angle >= -15 && angle <= 15) {
+            return 1;
+        } else if (angle < -15 && angle >= -30) {
+            return 2;
+        } else if (angle > 15 && angle <= 30) {
+            return 3;
+        } else if (angle < -30 && angle >= -100) {
+            return 5;
+        } else if (angle > 30 && angle <= 100) {
+            return 4;
+        } else if (angle < -100) {
+            return 6;
+        } else if (angle > 100) {
+            return 7;
+        } else {
+            return 0;
+        }
+    }
+
 
 
     /**
@@ -92,6 +267,15 @@ public class Router {
             this.direction = STRAIGHT;
             this.way = UNKNOWN_ROAD;
             this.distance = 0.0;
+        }
+
+        public NavigationDirection(int direction, String way, double distance) {
+            if (way == null) {
+                way = UNKNOWN_ROAD;
+            }
+            this.direction = direction;
+            this.way = way;
+            this.distance = distance;
         }
 
         public String toString() {

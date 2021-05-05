@@ -7,6 +7,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Graph for storing all of the intersection (vertex) and road (edge) information.
@@ -20,6 +22,68 @@ import java.util.ArrayList;
 public class GraphDB {
     /** Your instance variables for storing the graph. You should consider
      * creating helper classes, e.g. Node, Edge, etc. */
+
+    private Map<Long, ArrayList<Long>> adjNode = new HashMap<>();
+
+    private Map<Long, ArrayList<Edge>> adjEdge = new HashMap<>();
+
+    private Map<Long, Node> nodeList = new HashMap<>();
+
+    private Map<Long, Node> nodeList_cleaned = new HashMap<>();
+
+
+    private class Node {
+        public Long id;
+        public double lat;
+        public double lon;
+        private String nodeName = null;
+        public Node (Long id, double lat, double lon) {
+            this.id = id;
+            this.lat = lat;
+            this.lon = lon;
+        }
+
+        public void setNodeName (String nodeName) {
+            this.nodeName = nodeName;
+        }
+
+        public String getNodeName () {
+            return nodeName;
+        }
+    }
+
+    private class Edge {
+        private Long v;
+        private Long w;
+        private Long id;
+        private double weight;
+        public String name = null;
+        public Edge(long v, long w, double weight, String name, Long id) {
+            this.v = v;
+            this.w = w;
+            this.weight = weight;
+            this.name = name;
+            this.id = id;
+        }
+
+        public Long either() {
+            return v;
+        }
+
+        public Long other(Long t) {
+            return t.equals(v) ? w : v;
+        }
+
+        public double getWeight() {
+            return weight;
+        }
+
+        public String getWayName () {
+            return name;
+        }
+
+
+    }
 
     /**
      * Example constructor shows how to create and start an XML parser.
@@ -57,16 +121,67 @@ public class GraphDB {
      *  we can reasonably assume this since typically roads are connected.
      */
     private void clean() {
-        // TODO: Your code here.
+        for (Long id : nodeList.keySet()) {
+            if (adjNode.get(id).isEmpty()) nodeList_cleaned.remove(id);
+        }
     }
+
+    public void addNode(long id, double lat, double lon)
+    {
+        nodeList.put(id, new Node(id,lat,lon));
+        nodeList_cleaned.put(id, new Node(id,lat,lon));
+        adjNode.put(id, new ArrayList<Long>());
+        adjEdge.put(id, new ArrayList<Edge>());
+    }
+
+    public void addEdge(long v, long w, String name, long id) {
+        validateVertex(v);
+        validateVertex(w);
+        Edge e = new Edge(v,w,distance(v,w),name, id);
+        adjNode.get(w).add(v);
+        adjNode.get(v).add(w);
+        adjEdge.get(w).add(e);
+        adjEdge.get(v).add(e);
+    }
+
+    public void addWay(ArrayList<Long> way, String name, long id) {
+        for (int i = 1; i < way.size(); i += 1) {
+            addEdge(way.get(i), way.get(i-1), name, id);
+        }
+    }
+
+    public String getWayName(long v, long w) {
+
+        for (Edge e : adjEdge.get(v)) {
+            if (e.other(v).equals(w)) {
+                return e.getWayName();
+            }
+        }
+        return null;
+    }
+
+    public void setNodeName (Long id, String name) {
+        nodeList_cleaned.get(id).setNodeName(name);
+        nodeList.get(id).setNodeName(name);
+    }
+
+    public String getNodeName (Long id) {
+        return nodeList.get(id).getNodeName();
+    }
+
+    private void validateVertex(long v) {
+        if (!nodeList.containsKey(v)) {
+            throw new IllegalArgumentException("Node" + v + "does not exist in the current graph.");
+        }
+    }
+
 
     /**
      * Returns an iterable of all vertex IDs in the graph.
      * @return An iterable of id's of all vertices in the graph.
      */
     Iterable<Long> vertices() {
-        //YOUR CODE HERE, this currently returns only an empty list.
-        return new ArrayList<Long>();
+        return nodeList_cleaned.keySet();
     }
 
     /**
@@ -75,7 +190,13 @@ public class GraphDB {
      * @return An iterable of the ids of the neighbors of v.
      */
     Iterable<Long> adjacent(long v) {
-        return null;
+        validateVertex(v);
+        return adjNode.get(v);
+    }
+
+    Iterable<Edge> adjacentEdge (long v) {
+        validateVertex(v);
+        return adjEdge.get(v);
     }
 
     /**
@@ -87,6 +208,8 @@ public class GraphDB {
      * @return The great-circle distance between the two locations from the graph.
      */
     double distance(long v, long w) {
+        validateVertex(v);
+        validateVertex(w);
         return distance(lon(v), lat(v), lon(w), lat(w));
     }
 
@@ -114,6 +237,8 @@ public class GraphDB {
      * @return The initial bearing between the vertices.
      */
     double bearing(long v, long w) {
+        validateVertex(v);
+        validateVertex(w);
         return bearing(lon(v), lat(v), lon(w), lat(w));
     }
 
@@ -136,7 +261,16 @@ public class GraphDB {
      * @return The id of the node in the graph closest to the target.
      */
     long closest(double lon, double lat) {
-        return 0;
+        double closest = Double.MAX_VALUE;
+        Long result = 0l;
+        for (Long id : vertices()) {
+            double distance = distance(lon(id), lat(id), lon, lat);
+            if (distance < closest) {
+                closest = distance;
+                result = id;
+            }
+        }
+        return result;
     }
 
     /**
@@ -145,7 +279,7 @@ public class GraphDB {
      * @return The longitude of the vertex.
      */
     double lon(long v) {
-        return 0;
+        return nodeList.get(v).lon;
     }
 
     /**
@@ -154,6 +288,7 @@ public class GraphDB {
      * @return The latitude of the vertex.
      */
     double lat(long v) {
-        return 0;
+        return nodeList.get(v).lat;
     }
+
 }
