@@ -122,18 +122,10 @@ public class GraphDB {
      *  we can reasonably assume this since typically roads are connected.
      */
     private void clean() {
-        /**  for (Long id : nodeList.keySet()) {
-             if (adjNode.get(id).isEmpty()) nodeList_cleaned.remove(id);
-        }*/
-
-        Iterator<Map.Entry<Long, ArrayList<Long>>> it = adjNode.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry<Long, ArrayList<Long>> entry = it.next();
-            if (entry.getValue().isEmpty()) {
-                nodeList_cleaned.remove(entry.getKey());
-            }
+        for (Long id : nodeList.keySet()) {
+            if (adjNode.get(id).isEmpty()) nodeList_cleaned.remove(id);
         }
-
+   
     }
 
     public void addNode(long id, double lat, double lon)
