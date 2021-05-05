@@ -59,7 +59,7 @@ public class GraphDB {
         private Long id;
         private double weight;
         public String name = null;
-        public Edge(long v, long w, double weight, String name, Long id) {
+        public Edge(long v, long w, double weight, String name, long id) {
             this.v = v;
             this.w = w;
             this.weight = weight;

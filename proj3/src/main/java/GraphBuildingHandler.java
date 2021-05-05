@@ -86,6 +86,7 @@ public class GraphBuildingHandler extends DefaultHandler {
             wayID = Long.parseLong(attributes.getValue("id"));
             wayList = new ArrayList<>();
             wayValid = false;
+            wayName = "";
 //            System.out.println("Beginning a way...");
         } else if (activeState.equals("way") && qName.equals("nd")) {
             /* While looking at a way, we found a <nd...> tag. */
@@ -132,7 +133,6 @@ public class GraphBuildingHandler extends DefaultHandler {
         if (qName.equals("way") && wayValid) {
             g.addWay(wayList, wayName, wayID);
 //            System.out.println("Finishing a way...");
-
         }
     }
 

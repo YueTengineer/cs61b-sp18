@@ -75,6 +75,7 @@ public class Router {
         }
 
         Long Id = destId;
+
         while (Id != null) {
             sp.add(Id);
             Id = edgeTo.get(Id);
@@ -132,11 +133,16 @@ public class Router {
             throw new IllegalArgumentException("Route size is not sufficient!");
         }
 
-        if (route.size() == 3) {
+        List<NavigationDirection> result = new ArrayList<>();
 
+        if (route.size() == 2) {
+            Long id1 = route.get(0);
+            Long id2 = route.get(1);
+            NavigationDirection nd = new NavigationDirection(0,g.getWayName(id1,id2),g.distance(id1,id2));
+            result.add(nd);
+            return result;
         }
 
-        List<NavigationDirection> result = new ArrayList<>();
 
         int direction = 0;
         double distance = 0.0;
@@ -155,7 +161,7 @@ public class Router {
 
             boolean isFinal = i + 1 == route.size() - 1;
 
-            // When wayName gets changed, it suggests a turning point. Then the
+            // When wayName gets changed, it suggests a turning point.
             if (!curwayName.equals(nextwayName)) {
 
                 NavigationDirection nd = new NavigationDirection(direction,curwayName,distance);
