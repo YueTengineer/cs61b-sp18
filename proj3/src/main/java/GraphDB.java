@@ -8,6 +8,7 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -121,9 +122,18 @@ public class GraphDB {
      *  we can reasonably assume this since typically roads are connected.
      */
     private void clean() {
-        for (Long id : nodeList.keySet()) {
-            if (adjNode.get(id).isEmpty()) nodeList_cleaned.remove(id);
+        /**  for (Long id : nodeList.keySet()) {
+             if (adjNode.get(id).isEmpty()) nodeList_cleaned.remove(id);
+        }*/
+
+        Iterator<Map.Entry<Long, ArrayList<Long>>> it = adjNode.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<Long, ArrayList<Long>> entry = it.next();
+            if (entry.getValue().isEmpty()) {
+                nodeList_cleaned.remove(entry.getKey());
+            }
         }
+
     }
 
     public void addNode(long id, double lat, double lon)
