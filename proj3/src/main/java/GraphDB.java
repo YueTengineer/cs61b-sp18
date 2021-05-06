@@ -8,7 +8,6 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -122,7 +121,7 @@ public class GraphDB {
      *  we can reasonably assume this since typically roads are connected.
      */
     private void clean() {
-        for (Long id : nodeList.keySet()) {
+        for (long id : adjNode.keySet()) {
             if (adjNode.get(id).isEmpty()) nodeList_cleaned.remove(id);
         }
    
