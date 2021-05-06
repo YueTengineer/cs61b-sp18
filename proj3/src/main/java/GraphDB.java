@@ -8,6 +8,7 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.util.LinkedList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,8 +24,6 @@ public class GraphDB {
     /** Your instance variables for storing the graph. You should consider
      * creating helper classes, e.g. Node, Edge, etc. */
 
-    private Map<Long, LinkedList<Long>> adjNode = new HashMap<>();
-
     private Map<Long, LinkedList<Edge>> adjEdge = new HashMap<>();
 
     private Map<Long, Node> nodeList = new HashMap<>();
@@ -37,10 +36,12 @@ public class GraphDB {
         public double lat;
         public double lon;
         private String nodeName = null;
+        private List<Long> adjNode;
         public Node (Long id, double lat, double lon) {
             this.id = id;
             this.lat = lat;
             this.lon = lon;
+            this.adjNode = new LinkedList<>();
         }
 
         public void setNodeName (String nodeName) {
@@ -49,6 +50,13 @@ public class GraphDB {
 
         public String getNodeName () {
             return nodeName;
+        }
+        public void addAdj(long id) {
+            adjNode.add(id);
+        }
+
+        public List<Long> adj() {
+            return adjNode;
         }
     }
 
@@ -123,7 +131,7 @@ public class GraphDB {
     private void clean() {
 
         for (Long id : nodeList.keySet()) {
-            if (adjNode.get(id).isEmpty()) {
+            if (nodeList.get(id).adj().isEmpty()) {
                 nodeList_cleaned.remove(id);
             }
         }
@@ -134,7 +142,6 @@ public class GraphDB {
     {
         nodeList.put(id, new Node(id,lat,lon));
         nodeList_cleaned.put(id, new Node(id,lat,lon));
-        adjNode.put(id, new LinkedList<Long>());
         adjEdge.put(id, new LinkedList<Edge>());
     }
 
@@ -142,8 +149,10 @@ public class GraphDB {
         validateVertex(v);
         validateVertex(w);
         Edge e = new Edge(v,w,distance(v,w),name, id);
-        adjNode.get(w).add(v);
-        adjNode.get(v).add(w);
+        nodeList.get(w).addAdj(v);
+        nodeList.get(v).addAdj(w);
+        nodeList_cleaned.get(w).addAdj(v);
+        nodeList_cleaned.get(v).addAdj(w);
         adjEdge.get(w).add(e);
         adjEdge.get(v).add(e);
     }
@@ -195,7 +204,7 @@ public class GraphDB {
      */
     Iterable<Long> adjacent(long v) {
         validateVertex(v);
-        return adjNode.get(v);
+        return nodeList.get(v).adj();
     }
 
     Iterable<Edge> adjacentEdge (long v) {
