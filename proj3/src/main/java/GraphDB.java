@@ -6,7 +6,7 @@ import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,9 +23,9 @@ public class GraphDB {
     /** Your instance variables for storing the graph. You should consider
      * creating helper classes, e.g. Node, Edge, etc. */
 
-    private Map<Long, ArrayList<Long>> adjNode = new HashMap<>();
+    private Map<Long, LinkedList<Long>> adjNode = new HashMap<>();
 
-    private Map<Long, ArrayList<Edge>> adjEdge = new HashMap<>();
+    private Map<Long, LinkedList<Edge>> adjEdge = new HashMap<>();
 
     private Map<Long, Node> nodeList = new HashMap<>();
 
@@ -121,8 +121,11 @@ public class GraphDB {
      *  we can reasonably assume this since typically roads are connected.
      */
     private void clean() {
-        for (long id : adjNode.keySet()) {
-            if (adjNode.get(id).isEmpty()) nodeList_cleaned.remove(id);
+
+        for (Long id : nodeList.keySet()) {
+            if (adjNode.get(id).isEmpty()) {
+                nodeList_cleaned.remove(id);
+            }
         }
    
     }
@@ -131,8 +134,8 @@ public class GraphDB {
     {
         nodeList.put(id, new Node(id,lat,lon));
         nodeList_cleaned.put(id, new Node(id,lat,lon));
-        adjNode.put(id, new ArrayList<Long>());
-        adjEdge.put(id, new ArrayList<Edge>());
+        adjNode.put(id, new LinkedList<Long>());
+        adjEdge.put(id, new LinkedList<Edge>());
     }
 
     public void addEdge(long v, long w, String name, long id) {
@@ -145,7 +148,7 @@ public class GraphDB {
         adjEdge.get(v).add(e);
     }
 
-    public void addWay(ArrayList<Long> way, String name, long id) {
+    public void addWay(LinkedList<Long> way, String name, long id) {
         for (int i = 1; i < way.size(); i += 1) {
             addEdge(way.get(i), way.get(i-1), name, id);
         }
