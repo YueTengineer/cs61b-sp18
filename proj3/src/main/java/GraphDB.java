@@ -6,7 +6,7 @@ import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +24,7 @@ public class GraphDB {
     /** Your instance variables for storing the graph. You should consider
      * creating helper classes, e.g. Node, Edge, etc. */
 
-    private Map<Long, LinkedList<Edge>> adjEdge = new HashMap<>();
+    private Map<Long, ArrayList<Edge>> adjEdge = new HashMap<>();
 
     private Map<Long, Node> nodeList = new HashMap<>();
 
@@ -41,7 +41,7 @@ public class GraphDB {
             this.id = id;
             this.lat = lat;
             this.lon = lon;
-            this.adjNode = new LinkedList<>();
+            this.adjNode = new ArrayList<>();
         }
 
         public void setNodeName (String nodeName) {
@@ -135,14 +135,14 @@ public class GraphDB {
                 nodeList_cleaned.remove(id);
             }
         }
-   
+
     }
 
     public void addNode(long id, double lat, double lon)
     {
         nodeList.put(id, new Node(id,lat,lon));
         nodeList_cleaned.put(id, new Node(id,lat,lon));
-        adjEdge.put(id, new LinkedList<Edge>());
+        adjEdge.put(id, new ArrayList<Edge>());
     }
 
     public void addEdge(long v, long w, String name, long id) {
@@ -157,7 +157,7 @@ public class GraphDB {
         adjEdge.get(v).add(e);
     }
 
-    public void addWay(LinkedList<Long> way, String name, long id) {
+    public void addWay(ArrayList<Long> way, String name, long id) {
         for (int i = 1; i < way.size(); i += 1) {
             addEdge(way.get(i), way.get(i-1), name, id);
         }

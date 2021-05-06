@@ -36,7 +36,7 @@ public class GraphBuildingHandler extends DefaultHandler {
                     "secondary_link", "tertiary_link"));
     private String activeState = "";
     private final GraphDB g;
-    private LinkedList<Long> wayList;
+    private ArrayList<Long> wayList;
     private Long id;
     private Long wayID;
     private boolean wayValid;
@@ -84,7 +84,7 @@ public class GraphBuildingHandler extends DefaultHandler {
             /* We encountered a new <way...> tag. */
             activeState = "way";
             wayID = Long.parseLong(attributes.getValue("id"));
-            wayList = new LinkedList<>();
+            wayList = new ArrayList<>();
             wayValid = false;
             wayName = "";
 //            System.out.println("Beginning a way...");
