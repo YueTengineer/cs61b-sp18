@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 /**
  * Graph for storing all of the intersection (vertex) and road (edge) information.
  * Uses your GraphBuildingHandler to convert the XML files into a graph. Your
@@ -30,12 +31,16 @@ public class GraphDB {
 
     private Map<Long, Node> nodeList_cleaned = new HashMap<>();
 
+    private Map<String, List<Node>> locations = new HashMap<>();
 
-    private class Node {
+    private MyTrieSet trie = new MyTrieSet();
+
+
+    public class Node {
         public Long id;
         public double lat;
         public double lon;
-        private String nodeName = null;
+        public String nodeName = null;
         private List<Long> adjNode;
         public Node (Long id, double lat, double lon) {
             this.id = id;
@@ -48,9 +53,7 @@ public class GraphDB {
             this.nodeName = nodeName;
         }
 
-        public String getNodeName () {
-            return nodeName;
-        }
+
         public void addAdj(long id) {
             adjNode.add(id);
         }
@@ -173,14 +176,40 @@ public class GraphDB {
         return null;
     }
 
-    public void setNodeName (Long id, String name) {
+    public void addName (Long id, double lat, double lon, String name) {
+
+        String clean_name = cleanString(name);
+        if (clean_name == null || clean_name.length() == 0) {
+            return;
+        }
         nodeList_cleaned.get(id).setNodeName(name);
         nodeList.get(id).setNodeName(name);
+        Node n = new Node(id, lat, lon);
+        n.setNodeName(name);
+        if (!locations.containsKey(clean_name)) {
+            locations.put(clean_name,new ArrayList<>());
+        }
+        locations.get(clean_name).add(n);
+
+        trie.add(clean_name);
     }
 
-    public String getNodeName (Long id) {
-        return nodeList.get(id).getNodeName();
+    public List<String> keysWithPrefixOf (String prefix) {
+
+        List<String> result = new ArrayList<>();
+        for (String s : trie.keysWithPrefix(cleanString(prefix))) {
+            if (!locations.containsKey(s)) {
+                return null;
+            }
+            result.add(locations.get(s).get(0).nodeName);
+        }
+        return result;
     }
+
+    public List<Node> getLocationsInfo(String name) {
+        return locations.get(cleanString(name));
+    }
+
 
     private void validateVertex(long v) {
         if (!nodeList.containsKey(v)) {

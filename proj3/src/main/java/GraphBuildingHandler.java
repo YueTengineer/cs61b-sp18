@@ -41,6 +41,8 @@ public class GraphBuildingHandler extends DefaultHandler {
     private Long wayID;
     private boolean wayValid;
     private String wayName;
+    private double lon;
+    private double lat;
 
     /**
      * Create a new GraphBuildingHandler.
@@ -112,7 +114,7 @@ public class GraphBuildingHandler extends DefaultHandler {
         } else if (activeState.equals("node") && qName.equals("tag") && attributes.getValue("k")
                 .equals("name")) {
             /* While looking at a node, we found a <tag...> with k="name". */
-            g.setNodeName(id, attributes.getValue("v"));
+            g.addName(id, lat, lon, attributes.getValue("v"));
 //            System.out.println("Node's name: " + attributes.getValue("v"));
         }
     }

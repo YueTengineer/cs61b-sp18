@@ -4,12 +4,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.io.IOException;
@@ -17,6 +12,7 @@ import java.io.IOException;
 
 /* Maven is used to pull in these dependencies. */
 import com.google.gson.Gson;
+import org.junit.Test;
 
 import static spark.Spark.*;
 
@@ -285,7 +281,7 @@ public class MapServer {
      * cleaned <code>prefix</code>.
      */
     public static List<String> getLocationsByPrefix(String prefix) {
-        return new LinkedList<>();
+        return graph.keysWithPrefixOf(prefix);
     }
 
     /**
@@ -301,7 +297,18 @@ public class MapServer {
      * "id" : Number, The id of the node. <br>
      */
     public static List<Map<String, Object>> getLocations(String locationName) {
-        return new LinkedList<>();
+        List<Map<String, Object>> result = new ArrayList<>();
+        Map<String, Object> locationinfo  = new HashMap<>();
+        for (GraphDB.Node n : graph.getLocationsInfo(locationName)) {
+            locationinfo.put("lat", n.lat);
+            locationinfo.put("lon", n.lon);
+            locationinfo.put("id", n.id);
+            locationinfo.put("name", n.nodeName);
+            result.add(locationinfo);
+            System.out.println(n.nodeName);
+        }
+
+        return result;
     }
 
     /**
